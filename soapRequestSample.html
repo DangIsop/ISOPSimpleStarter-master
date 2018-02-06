@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<title></title>
+<head> 
+	<script>
+		function soapRequest() {
+			var str = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:dangote-group.com:ng:isop:authentication"> ' +
+						   '<soapenv:Header/> ' +
+						   '<soapenv:Body> ' +
+						      '<urn:mt_full_auth_in> ' +
+						         '<username>DEVTESTER</username> ' +
+						         '<password>PASS3</password> ' +
+						         '<full_synch>1</full_synch> ' +
+						      '</urn:mt_full_auth_in> ' +
+						   '</soapenv:Body> ' +
+						'</soapenv:Envelope>'
+
+			 function createCORSRequest(method, url, username, password) {
+                    var xhr = new XMLHttpRequest();
+                    if ("withCredentials" in xhr) {
+                        xhr.open(method, url, false,username, password);
+                    } else if (typeof XDomainRequest != "undefined") {
+                        alert
+                        xhr = new XDomainRequest();
+                        xhr.open(method, url);
+                    } else {
+                        console.log("CORS not supported");
+                        alert("CORS not supported");
+                        xhr = null;
+                    }
+                    return xhr;
+         }
+
+         var xhr = createCORSRequest(POST, "http://devsappo.dangote-group.com:50000/dir/wsdl?p=sa/1056838088b53fc0a6c848599f1c7fd2", 'devuser',"user@200")
+
+         if (!xhr) {
+         	console.log("XHR Issue");
+         	return;
+         }
+
+         //response handlers
+         xhr.onload = function() {
+         	var results = xhr.responseText;
+         	console.log(results);
+         }
+         xhr.onerror = function() {
+         	console.log('There was an error!');
+         }
+
+         xhr.setRequestHeader('Content-Type', 'text/xml');
+         xhr.send(str);
+		}
+	</script>
+</head>
+<body>
+	<input type="button" name="" value="SOAP Request" onclick="soapRequest();" />
+</body>
+</html>
